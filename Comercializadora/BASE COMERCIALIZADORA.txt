@@ -1,0 +1,98 @@
+create database Comercializadora
+
+create table Empleados(
+Id_Empleados int primary key not null,
+Nombre varchar(max),
+Puesto varchar(max),
+Telefono varchar(max),
+Id_Sucursal int foreign key references Empresa(Id_Sucursal)
+)
+
+create table Empresa(
+Id_Sucursal int primary key not null,
+RFC varchar(max),
+Nombre varchar(max),
+Direccion varchar(max),
+Ciudad varchar(max),
+Estado varchar(max),
+Telefono varchar(max)
+)
+
+create table Clientes(
+Id_Clientes int primary key not null,
+RFC varchar(max),
+Nombre varchar(max),
+Direccion varchar(max),
+Ciudad varchar(max),
+Estado varchar(max),
+Telefono varchar(max),
+Correo varchar(max),
+Id_Sucursal int foreign key references Empresa(Id_Sucursal)
+)
+
+create table Proveedores(
+Id_Proveedores int primary key not null,
+RFC varchar(max),
+Nombre varchar(max),
+Direccion varchar(max),
+Ciudad varchar(max),
+Estado varchar(max),
+Telefono varchar(max),
+Correo varchar(max),
+)
+
+create table Productos(
+Id_Producto int primary key not null,
+concepto varchar(max),
+Precio money,
+Id_Proveedores int foreign key references Proveedores(Id_Proveedores)
+)
+
+create table Servicios(
+Id_Servicio int primary key not null,
+Nombre varchar(max),
+Descripcion varchar(max),
+Precio money,
+Id_Empleados int foreign key references Empleados(Id_Empleados)
+)
+
+create table Vende(
+Id_Empleados int foreign key references Empleados(Id_Empleados),
+Id_Productos int foreign key references Productos(Id_Producto),
+Id_Servicio int foreign key references Servicios(Id_Servicio),
+Existencia_en_Sucursal varchar(10),
+Cantidad_en_stock int,
+primary key(Id_Empleados, Id_Productos,Id_Servicio)
+
+create table Ticket(
+Id_Ticket int primary key not null,
+Id_Sucursal int foreign key references Empresa(Id_Sucursal),
+Id_Empleados int foreign key references Empleados(Id_Empleados),
+Id_Clientes int foreign key references Clientes(Id_Clientes),
+fecha varchar(max),
+hora varchar(max),
+Cantidad int,
+Producto varchar(max),
+Precio_Unitario money,
+Importe money
+)
+
+create table Venta(
+Id_Ticket int foreign key references Ticket(Id_Ticket),
+Subtotal money,
+IVA_16 float,
+Total money
+)
+
+create table Devolucion(
+Id_Devolucion int primary key not null,
+fecha varchar(max),
+hora varchar(max),
+Id_Clientes int foreign key references Clientes(Id_Clientes),
+Id_Empleados int foreign key references Empleados(Id_Empleados),
+Id_Producto int foreign key references Productos(Id_Producto),
+Descripcion varchar(max),
+Fallo varchar(max),
+Precio money
+)
+)
